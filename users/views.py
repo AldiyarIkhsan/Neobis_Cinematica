@@ -15,10 +15,10 @@ class RegisterView(APIView):
 
 class LoginView(APIView):
     def post(self, request):
-        name = request.data['name']
+        email = request.data['email']
         password = request.data['password']
 
-        user = User.objects.filter(name=name).first()
+        user = User.objects.filter(email=email).first()
 
         if user is None:
             raise AuthenticationFailed('User not found!')
@@ -50,7 +50,7 @@ class UserView(APIView):
             raise AuthenticationFailed('Unauthenticated!')
 
         try:
-            payload = jwt.decode(token, 'secret', algorithm=['HS256'])
+            payload = jwt.decode(token, 'secret', algorithms=['HS256'])
         except jwt.ExpiredSignatureError:
             raise AuthenticationFailed('Unauthenticated!')
 
